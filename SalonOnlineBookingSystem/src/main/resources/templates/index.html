@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<link rel="stylesheet"
+	href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+	integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
+	crossorigin="anonymous">
+	
+<link href="/docs/4.4/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
+<meta name="msapplication-config" content="/docs/4.4/assets/img/favicons/browserconfig.xml">
+<meta name="theme-color" content="#563d7c">
+
+<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+	integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
+	crossorigin="anonymous"></script>
+
+<script
+	src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+	integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+	crossorigin="anonymous"></script>
+
+<script
+	src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+	integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+	crossorigin="anonymous"></script>
+<title>Find Your Stylist</title>
+
+<style>
+.bd-placeholder-img  {
+        
+        
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        background-image: url('/images/bg.jpg');
+  		background-repeat: no-repeat;
+  		background-attachment: fixed;
+  		background-position: top left; 
+      }
+
+      @media (min-width: 768px) {
+        .bd-placeholder-img-lg {
+          font-size: 3.5rem;
+        }
+      }
+</style>
+</head>
+<body>
+	<nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
+  <a class="navbar-brand" href="#">&uarr;Top</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item active">
+        <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#">Placeholder</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Placeholder</a>
+      </li>
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Placeholder</a>
+        <div class="dropdown-menu" aria-labelledby="dropdown01">
+          <a class="dropdown-item" href="#">Placeholder</a>
+          <a class="dropdown-item" href="#">Placeholder</a>
+          <a class="dropdown-item" href="#">Placeholder</a>
+        </div>
+      </li>
+    </ul>
+    <form class="form-inline my-2 my-lg-0">
+      <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search">
+      <button class="btn btn-secondary my-2 my-sm-0" type="submit">Search</button>
+    </form>
+  </div>
+</nav>
+
+<main role="main" class="container">
+
+  <div class="starter-template" style="margin-top: 100px">
+    <h1>Find Your Stylist Here!</h1>
+    <p class="lead">Please use the list below to find a stylist you desire.<br>Click "Book an Appointment with Me!" to fill up form.</p>
+    <table class="table" style="background-color: white">
+		<thead class="thead-dark">
+			<tr>
+				<th scope="col"></th>
+				<th scope="col" width="200">Stylist</th>
+				<th scope="col">Title</th>
+				<th scope="col" width="200">Services</th>
+				<th scope="col" width="150">Phone</th>
+				<th scope="col">Description</th>
+			</tr>
+			<tr th:each="employee : ${employeeList}">
+				<td><img th:src="${employee.avatar}" height="150" width="150" /></td>
+				<td>
+					<table>
+						<tr><td th:text="${employee.name}">Katherine Rannelli</td></tr>
+						<tr><td><font size="2"><a th:href="@{/fillAppointment/}+${employee.id}">Book an Appointment with Me!</a></font></td></tr>
+					</table>
+				
+				<td th:text="${employee.title}">Owner</td>
+				<td th:text="${employee.services}">Color</td>
+				<td th:text="${employee.phone}">905-955-8040</td>
+				<td th:text="${employee.dscr}">abcdefe</td>
+			</tr>
+	</table>
+  </div>
+
+</main>
+</body>
+</html>
