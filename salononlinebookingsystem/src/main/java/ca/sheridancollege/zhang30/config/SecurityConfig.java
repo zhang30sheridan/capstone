@@ -35,7 +35,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception { 
 		auth.inMemoryAuthentication()
 			.passwordEncoder(NoOpPasswordEncoder.getInstance())
-				.withUser("test").password("1234").roles("USER")
+				.withUser("test@test.com").password("1234").roles("USER")
 				.and()
 				.withUser("manager").password("password").roles("MANAGER"); 
 	}
