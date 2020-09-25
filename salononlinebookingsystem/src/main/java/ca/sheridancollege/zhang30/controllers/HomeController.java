@@ -5,6 +5,7 @@ import java.time.LocalTime;
 import java.util.List;
 
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,9 +15,14 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import ca.sheridancollege.zhang30.beans.Appointment;
+import ca.sheridancollege.zhang30.beans.Customer;
 import ca.sheridancollege.zhang30.beans.Employee;
+import ca.sheridancollege.zhang30.beans.Account;
+import ca.sheridancollege.zhang30.repositories.AccountRepository;
 import ca.sheridancollege.zhang30.repositories.AppointmentRepository;
+import ca.sheridancollege.zhang30.repositories.CustomerRepository;
 import ca.sheridancollege.zhang30.repositories.EmployeeRepository;
+import ca.sheridancollege.zhang30.repositories.RoleRepository;
 import lombok.AllArgsConstructor;
 
 @Controller
@@ -24,7 +30,17 @@ import lombok.AllArgsConstructor;
 public class HomeController {
 	
 	private EmployeeRepository employeeRepository;
+	private CustomerRepository customerRepository;
 	private AppointmentRepository appointmentRepository;
+	
+	private AccountRepository accountRepository;
+	
+	private RoleRepository roleRepository;
+	
+	private String encodePassword(String password) { 
+		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(); 
+		return encoder.encode(password); 
+	}
 
 	@GetMapping("/")
 	public String index(Model model) {
@@ -72,12 +88,12 @@ public class HomeController {
 		
 //		appointmentRepository.deleteAll();
 		
-		if(appointmentRepository.count() == 0) {
-			
-			Appointment appointment = Appointment.builder().date(LocalDate.of(2020, 5, 1)).time(LocalTime.of(5, 30)).note("This is test. This is test. This is test.").build();
-			appointmentRepository.save(appointment);
-		}
-		
+//		if(appointmentRepository.count() == 0) {
+//			
+//			Appointment appointment = Appointment.builder().date(LocalDate.of(2020, 5, 1)).time(LocalTime.of(5, 30)).note("This is test. This is test. This is test.").build();
+//			appointmentRepository.save(appointment);
+//		}
+//		
 		
 		
 		List<Appointment> appList = appointmentRepository.findAll();
@@ -97,4 +113,37 @@ public class HomeController {
 		
 		return "/user/index";
 	}
+	
+	@GetMapping("/register") 
+	public String goRegistration () { 
+		return "register"; 
+	} 
+	
+	@PostMapping("/register") 
+	public String doRegistration(Model model, @RequestParam String email, @RequestParam String name, @RequestParam String phone, @RequestParam String password) {
+		
+		Account checkAccount = accountRepository.findByEmail(email);
+		
+		if(checkAccount == null) {
+			Account account = new Account(email, encodePassword(password), Byte.valueOf("1")); 
+			account.getRoles().add(roleRepository.findByRolename("ROLE_USER"));
+			accountRepository.save(account);
+			
+			Customer customer = Customer.builder()
+					.name(name)
+					.phone(phone)
+					.build();
+			customer.setAccount(account);
+			
+			customerRepository.save(customer);
+			
+			return "redirect:/";
+		}else {
+			model.addAttribute("emailExist", checkAccount);
+		}
+		return "register"; 
+	}
+	
+	
+	
 }

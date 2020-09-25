@@ -9,8 +9,13 @@ INSERT INTO employee (name, avatar, title, services, phone, dscr) VALUES ('Marya
 INSERT INTO employee (name, avatar, title, services, phone, dscr) VALUES ('Megean', '/images/avatars/Megean.jpg', 'Colour Tech', 'Hair Color, Highlights', '905-251-7173', '10 Years experience, specializing in colour and highlights.');
 INSERT INTO employee (name, avatar, title, services, phone, dscr) VALUES ('Ellie', '/images/avatars/Ellie.jpg', 'Beauty Tech', 'Eye Lash Extensions, Microblading, Permanent Makeup and Tattoo', '647-637-7131', 'Specializing in eye lash extensions, Microblading, permanent makeup and tattoo.');
 
-INSERT INTO Customer(name) VALUES ('Linda');
+INSERT INTO Account(email, encrypted_Password, enabled) VALUES ('test@test.com', '$2a$10$1ltibqiyyBJMJQ4hqM7f0OusP6np/IHshkYc4TjedwHnwwNChQZCy', 1);
 
-INSERT INTO account(email, encrypted_Password, enabled) VALUES ('linda@capstone.ca', '$2a$10$1ltibqiyyBJMJQ4hqM7f0OusP6np/IHshkYc4TjedwHnwwNChQZCy', 1);
+INSERT INTO Role(rolename) VALUES('ROLE_ADMIN'); 
+INSERT INTO Role(rolename) VALUES('ROLE_USER');
+INSERT INTO Role(rolename) VALUES('ROLE_EMP');
 
-INSERT INTO CUSTOMER_ACCOUNT(CUSTOMER_ID, ACCOUNT_ID) VALUES (1, 1);
+INSERT INTO Account_Roles(accounts_id, roles_id) VALUES(1, 1); 
+INSERT INTO Account_Roles(accounts_id, roles_id) VALUES(1, 2); 
+
+INSERT INTO Employee_Account(employee_id, account_id) VALUES(1, 1); 

@@ -31,6 +31,8 @@ public class Customer {
 	private Long id;
 	@NonNull
 	private String name;
+	@NonNull
+	private String phone;
 	
 	@OneToMany
 	private List<Appointment> appointmentList;
