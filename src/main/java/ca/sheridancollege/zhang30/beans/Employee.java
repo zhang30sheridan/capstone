@@ -15,6 +15,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.NonNull;
 
 @Data
 @Entity
@@ -32,6 +33,8 @@ public class Employee {
 	private String services;
 	private String phone;
 	private String dscr;
+	@NonNull
+	private Byte enabled;
 
 	@OneToMany
 	private List<Appointment> appointmentList;

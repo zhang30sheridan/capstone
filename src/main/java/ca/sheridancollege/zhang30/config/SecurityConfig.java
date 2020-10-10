@@ -34,6 +34,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		
 		http.authorizeRequests()
 			.antMatchers("/user/**").hasRole("USER") 
+			.antMatchers("/admin/**").hasRole("ADMIN") 
 			.antMatchers(HttpMethod.POST, "/register").permitAll()
 			.antMatchers("/", "/js/**", "/css/**", "/images/**", "/**").permitAll()
 			.antMatchers("/h2-console/**").permitAll()
@@ -49,15 +50,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 				.exceptionHandling()
 				.accessDeniedHandler(accessDeniedHandler);
 	}
-	
-//	@Override 
-//	protected void configure(AuthenticationManagerBuilder auth) throws Exception { 
-//		auth.inMemoryAuthentication()
-//			.passwordEncoder(NoOpPasswordEncoder.getInstance())
-//				.withUser("Frank").password("1234").roles("USER")
-//				.and()
-//				.withUser("manager").password("password").roles("MANAGER"); 
-//	}
 	
 	@Autowired public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception{ 
 		auth.userDetailsService(userDetailsService) 

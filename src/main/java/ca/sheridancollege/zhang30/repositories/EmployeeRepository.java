@@ -6,4 +6,5 @@ import ca.sheridancollege.zhang30.beans.Employee;
 
 public interface EmployeeRepository extends JpaRepository<Employee, Long> {
 
+	public Employee findByAccountEmail(String email);
 }
