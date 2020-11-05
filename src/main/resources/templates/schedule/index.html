@@ -38,7 +38,7 @@
 	
 	
 	<script src="../static/js/admin.js" th:src="@{/js/admin.js}"></script> 
-<title>Admin Panel - Employee List</title>
+<title>Schedule List</title>
 
 <style>
 .bd-placeholder-img {
@@ -69,15 +69,17 @@
 			<span class="navbar-toggler-icon"></span>
 		</button>
 
-		<div class="collapse navbar-collapse" id="navbarsExampleDefault">
+		<div class="collapse navbar-collapse" id="navbarsExampleDefault" th:if="${admin}">
 			<ul class="navbar-nav mr-auto">
-				<li class="nav-item active"><a class="nav-link" href="/" th:href="@{/}">Home
-						<span class="sr-only">(current)</span>
-				</a></li>
-				<li class="nav-item"><a class="nav-link" href="#">Admin</a>
+				<li class="nav-item active">
+					<a class="nav-link" href="/" th:href="@{/}">Home<span class="sr-only">(current)</span></a>
 				</li>
-				<li class="nav-item"><a class="nav-link disabled" href="#"
-					tabindex="-1" aria-disabled="true">Placeholder</a></li>
+				<li class="nav-item">
+					<a class="nav-link" href="#">Admin</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Placeholder</a>
+				</li>
 				<li class="nav-item dropdown">
 					<a class="nav-link dropdown-toggle" href="#" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Work Schedule</a>
 					<div class="dropdown-menu" aria-labelledby="dropdown01">
@@ -85,14 +87,14 @@
 						<a class="dropdown-item" href="#">Placeholder</a>
 					</div>
 				</li>
-				<li class="nav-item dropdown"><a
-					class="nav-link dropdown-toggle" href="#" id="dropdown01"
-					data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Manage Employees</a>
+				<li class="nav-item dropdown">
+					<a class="nav-link dropdown-toggle" href="#" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Manage Employees</a>
 					<div class="dropdown-menu" aria-labelledby="dropdown01">
 						<a class="dropdown-item" href="#" th:href="@{/admin/newEmployee}">Add a New Employee</a>
 						<a class="dropdown-item" href="/admin" th:href="@{/admin}">View All Employees</a>
 						<a class="dropdown-item" href="#">Placeholder</a>
-					</div></li>
+					</div>
+				</li>
 			</ul>
 			<form class="form-inline my-2 my-lg-0">
 				<input class="form-control mr-sm-2" type="text" placeholder="Search"
@@ -104,8 +106,31 @@
 			</div>
 		</div>
 		
-		
-		
+		<div class="collapse navbar-collapse" id="navbarsExampleDefault" th:if="${employee}">
+			<ul class="navbar-nav mr-auto">
+				<li class="nav-item active"><a class="nav-link" href="/" th:href="@{/}">Home
+						<span class="sr-only">(current)</span>
+				</a></li>
+				<li class="nav-item"><a class="nav-link" href="#">Employee</a>
+				</li>
+				<li class="nav-item"><a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Placeholder</a></li>
+				<li class="nav-item dropdown">
+					<a class="nav-link dropdown-toggle" href="#" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Work Schedule</a>
+					<div class="dropdown-menu" aria-labelledby="dropdown01">
+						<a class="dropdown-item" href="#" th:href="@{/schedule}">Manage Work Schedule</a>
+						<a class="dropdown-item" href="#">Placeholder</a>
+					</div>
+				</li>
+			</ul>
+			<form class="form-inline my-2 my-lg-0">
+				<input class="form-control mr-sm-2" type="text" placeholder="Search"
+					aria-label="Search">
+				<button class="btn btn-secondary my-2 my-sm-0" type="submit">Search</button>
+			</form>
+			<div>
+				<a class="nav-link" href="#" th:href="@{/logout}">Logout</a>
+			</div>
+		</div>
 		
 	</nav>
 	
@@ -118,39 +143,47 @@
 				<p>The employee has been updated successfully.</p>
 				</div>
 		    </div>
+		    <form action="#"  method="post" th:action="@{/addSchedule}">
+		    	<div class="form-row">
+		    		<div class="form-group col-md-4">
+		    			<label for="date">Work Date</label>
+      					<input type="date" class="form-control" name="workDate" id="workDate" required>
+		    		</div>
+		    		<div class="form-group col-md-4">
+		    			<label for="date">Start Work Time</label>
+      					<input type="time" class="form-control" name="startWorkTime" id="startWrokTime" value="09:00" min="09:00" max="19:00" step="300" required>
+		    		</div>
+		    		<div class="form-group col-md-4">
+		    			<label for="date">End Work Time</label>
+      					<input type="time" class="form-control" name="endWorkTime" id="endWrokTime" value="10:00" min="10:00" max="20:00" step="300" required><p>
+      					<input type="submit" class="btn btn-secondary btn-sm pull-right" value="Add Schedule to List">
+		    		</div>
+		    	</div>
+		    	
+		    </form>
 			<div class="row">
         		<div class="col-md-12">
-        			<h4>Employee List</h4>
-        			<a class="btn btn-outline-dark btn-sm pull-right" href="#" th:href="@{/admin/newEmployee}"><i class="fa fa-plus"></i> Add A New Employee</a>
-        			<a href="#" th:href="@{/admin/findAllEmployees}">Display All Employees </a>|
-        			<a href="#" th:href="@{/admin}"> Enabled Employees </a>|
-        			<a href="#" th:href="@{/admin/findDeactivatedEmployees}"> Deactivated Employees</a>
+        			<h4>Schedule List</h4>
+        			<a href="#" th:href="@{/schedule/all}">All Work Schedules </a>|
+        			<a href="#" th:href="@{/schedule/past}"> Passed Schedules </a>|
+        			<a href="#" th:href="@{/schedule}"> Effective Schedules</a>
         			<br>
         			<div class="table-responsive">
 						<table id="mytable" class="table table-bordred table-striped">
                    			<thead>
-                   				<th>Name</th>
-                    			<th>Title</th>
-                     			<th>Services</th>
-                     			<th>Phone</th>
-                     			<th>Email</th>
-                     			<th>Enabled</th>
-                      			<th>Edit</th>
+                   				<th>Work Date</th>
+                    			<th>Day of Week</th>
+                    			<th>Start Time</th>
+                     			<th>End Time</th>
                        			<th>Delete</th>
                    			</thead>
     						<tbody>
-							    <tr th:each="employee : ${employeeList}">
-							    <td th:text="${employee.name}">Yu Zhang</td>
-							    <td th:text="${employee.title}">Full Stack Developer</td>
-							    <td th:text="${employee.service}">JAVA Spring Boot, Bootstrap, HTML</td>
-							    <td th:text="${employee.phone}">647-448-2881</td>
-							    <td th:text="${employee.account.email}" >zhang30@sheridancollege.ca</td>
-							    <td id="enabled" th:if="${employee.enabled}">Yes</td>
-							    <td id="enabled" th:if="${!employee.enabled}">No</td>
-							    <td><a class="btn btn-secondary btn-sm" href="#" th:data-parameter1="${employee.id}" onclick="openEditModal(this.getAttribute('data-parameter1'));"><i class="fa fa-edit"></i></a></td>
-							    <!--<td><a class="btn btn-primary btn-sm" th:data-parameter1="${employee.id}" onclick="openEditModal(this.getAttribute('data-parameter1'));"><i class="fa fa-edit"></i></a></td>-->   
-							    <!--<td><a th:href="@{/admin/editEmployee/}+${employee.id}">Edit</a></td>-->
-							    <td><button class="btn btn-danger btn-sm" href="#" th:data-parameter1="${employee.id}" onclick="openDeleteModal(this.getAttribute('data-parameter1'));"><i class="fa fa-trash"></i></button></td>
+							    <tr th:each="s : ${scheduleList}">
+							    <td th:text="${s.workDate}">2020-10-1</td>
+							    <td th:text="${s.dayOfWeek}">2020-10-1</td>
+							    <td th:text="${s.startWorkTime}">9:00</td>
+							    <td th:text="${s.endWorkTime}">17:00</td>
+							    <td><a class="btn btn-danger btn-sm" th:href="@{/deleteSchedule/}+${s.id}"><i class="fa fa-trash"></i></a></td>
 							    </tr>
     						</tbody>
 						</table>    
@@ -165,7 +198,7 @@
 		<div class="modal-dialog">
 			<div class="modal-content">
 				<div class="modal-header">
-					<h4 class="modal-title">Edit Employee</h4>
+					<h4 class="modal-title">Edit Employee (Not working yet!!!!!)</h4>
 					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 				</div>
 				<div class="modal-body">
@@ -220,7 +253,7 @@
     	<div class="modal-dialog">
     		<div class="modal-content">
           		<div class="modal-header">
-        			<h4 class="modal-title custom_align" id="Heading">Delete</h4>
+        			<h4 class="modal-title custom_align" id="Heading">Delete (Not working yet!!!)</h4>
         			<button type="button" class="close" data-dismiss="modal" aria-hidden="true"><i class="fa fa-times"></i></button>
       			</div>
           		<div class="modal-body">

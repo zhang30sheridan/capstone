@@ -147,8 +147,12 @@ public class HomeController {
 		
 		Account checkAccount = accountRepository.findByEmail(email);
 		
+		
 		if(checkAccount == null) {
 			Account account = new Account(email, encodePassword(password), Byte.valueOf("1")); 
+			account.setAdmin(false);
+			account.setEmployee(false);
+			account.setCustomer(true);
 			account.getRoles().add(roleRepository.findByRolename("ROLE_USER"));
 			accountRepository.save(account);
 			
@@ -167,81 +171,4 @@ public class HomeController {
 		return "register"; 
 	}
 	
-	@GetMapping("/admin")
-	public String adminIndex(Model model) {
-		List<Employee> employeeList = employeeRepository.findAll();
-		model.addAttribute("employeeList", employeeList);
-		return "/admin/index";
-	}
-	
-	@GetMapping("/admin/newEmployee")
-	public String newEmployee(Model model) {
-		return "/admin/newEmployee";
-	}
-	
-	@PostMapping("/admin/newEmployee") 
-	public String doNewEmployee(Model model, @RequestParam String email, @RequestParam String name, @RequestParam String title, @RequestParam String services, 
-			@RequestParam String phone, @RequestParam String dscr, @RequestParam String password, @RequestParam(defaultValue = "false") boolean roleAdmin) {
-		
-		Account checkAccount = accountRepository.findByEmail(email);
-		
-		if(checkAccount == null) {
-			Account account = new Account(email, encodePassword(password), Byte.valueOf("1")); 
-			account.getRoles().add(roleRepository.findByRolename("ROLE_USER"));
-			account.getRoles().add(roleRepository.findByRolename("ROLE_EMP"));
-			if(roleAdmin) {
-				account.getRoles().add(roleRepository.findByRolename("ROLE_ADMIN"));
-			}
-			accountRepository.save(account);
-			
-			Employee employee = Employee.builder()
-					.name(name)
-					.avatar("/images/avatars/newUser.png")
-					.title(title)
-					.services(services)
-					.phone(phone)
-					.dscr(dscr)
-					.enabled(Byte.valueOf("1"))
-					.build();
-			employee.setAccount(account);
-			
-			employeeRepository.save(employee);
-
-			model.addAttribute("newEmployee", employee);
-		}else {
-			model.addAttribute("emailExist", checkAccount);
-		}
-		return "/admin/newEmployee"; 
-	}
-	
-	@GetMapping("/admin/editEmployee/{id}")
-	public String editEmployee(Model model, @PathVariable Long id) {
-		
-		Employee employee = employeeRepository.findById(id).get();
-		
-		System.out.print(employee.getName());
-		
-		model.addAttribute("editEmployee", employee);
-		model.addAttribute("employeeList", employeeRepository.findAll());
-		
-		return "/admin/index :: #editModal";
-	}
-	
-	@PostMapping("/admin/doEditEmployee")
-	public String doEditEmployee(Model model, @ModelAttribute Employee employee) {
-		Employee employeeEdited = employee;
-		
-		employeeRepository.findById(employeeEdited.getId()).get().setName(employeeEdited.getName());
-		employeeRepository.findById(employeeEdited.getId()).get().setTitle(employeeEdited.getTitle());
-		employeeRepository.findById(employeeEdited.getId()).get().setServices(employeeEdited.getServices());
-		employeeRepository.findById(employeeEdited.getId()).get().setPhone(employeeEdited.getPhone());
-		employeeRepository.findById(employeeEdited.getId()).get().setDscr(employeeEdited.getDscr());
-		
-		model.addAttribute("employeeList", employeeRepository.findAll());
-		model.addAttribute("employeeEdited", employeeEdited);
-		return "/admin/index";
-	}
-	
-	
-	// push to github 
 }

@@ -2,11 +2,15 @@ package ca.sheridancollege.zhang30.beans;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -32,4 +36,7 @@ public class Appointment {
 	private String note;
 	private Long employeeId;
 	private Long customerId;
+	
+	@ManyToMany(cascade=CascadeType.ALL, mappedBy="appointments") 
+	private List<Account> accounts = new ArrayList<Account>();
 }

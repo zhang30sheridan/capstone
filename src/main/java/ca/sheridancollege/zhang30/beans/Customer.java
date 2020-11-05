@@ -34,9 +34,6 @@ public class Customer {
 	@NonNull
 	private String phone;
 	
-	@OneToMany
-	private List<Appointment> appointmentList;
-	
 	@OneToOne
 	@JoinTable(name="CUSTOMER_ACCOUNT", joinColumns = @JoinColumn(name="CUSTOMER_ID"), inverseJoinColumns=@JoinColumn(name="ACCOUNT_ID"))
 	private Account account;

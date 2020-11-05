@@ -24,3 +24,15 @@ function openEditModal(id){
 		}
 	});
 }
+
+function openDeleteModal(id){
+	
+	$.ajax({
+		url:"/admin/deleteEmployee/" + id,
+		success: function(data){
+			$("#holder").html(data);
+			$("#deleteModal").modal("show");
+		}
+	});
+}
+

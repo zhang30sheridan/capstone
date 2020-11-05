@@ -12,6 +12,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -37,9 +38,18 @@ public class Account {
 	private String encryptedPassword;
 	@NonNull
 	private Byte enabled;
+	private boolean isCustomer;
+	private boolean isEmployee;
+	private boolean isAdmin;
+	
+//	@OneToMany
+//	private List<Appointment> appointmentList;
 	
 	@ManyToMany(cascade=CascadeType.ALL, fetch = FetchType.EAGER) 
 	private List<Role> roles = new ArrayList<Role>();
+	
+	@ManyToMany(cascade=CascadeType.ALL) 
+	private List<Appointment> appointments = new ArrayList<Appointment>();
 	
 	
 }
